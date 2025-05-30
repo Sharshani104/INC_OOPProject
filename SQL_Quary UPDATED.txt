@@ -1,0 +1,246 @@
+CREATE DATABASE INC;
+
+USE INC;
+
+CREATE TABLE Employee (
+	empId INT NOT NULL,
+	empName VARCHAR(50),
+	dateOfBirth DATE,
+	spouseId int,
+	dateOfMarriage DATE,
+	depId INT,
+	jtId INT,
+	projectAssigned INT,
+	CONSTRAINT pk_emplyeeId PRIMARY KEY (empId),
+	CONSTRAINT fk_spouse FOREIGN KEY (spouseId)REFERENCES Employee(empId)
+
+	);
+
+	ALTER TABLE Employee 
+	ADD CONSTRAINT fk_departmentId FOREIGN KEY (depId) REFERENCES Department (depId);
+
+	ALTER TABLE Employee
+	ADD CONSTRAINT fk_jobTitleId FOREIGN KEY (jtId) REFERENCES Job_Title (jtId);
+
+	ALTER TABLE Employee
+	ADD CONSTRAINT fk_pAssigned FOREIGN KEY (projectAssigned) REFERENCES Project (pId);
+
+	INSERT INTO Employee (empId,empName,dateOfBirth,spouseId,dateOfMarriage,depId,jtId,projectAssigned) VALUES(001,'Silva','1970-01-05',null,null,221,111,441);
+	INSERT INTO Employee (empId,empName,dateOfBirth,spouseId,dateOfMarriage,depId,jtId,projectAssigned) VALUES(002,'Arini','1972-07-07',null,null,222,112,443);
+	INSERT INTO Employee (empId,empName,dateOfBirth,spouseId,dateOfMarriage,depId,jtId,projectAssigned) VALUES(003,'Sandun','1989-11-30',null,'2015-05-05',221,111,442);
+	INSERT INTO Employee (empId,empName,dateOfBirth,spouseId,dateOfMarriage,depId,jtId,projectAssigned) VALUES(004,'Sandali','1989-01-25',null,'2015-05-05',223,113,441);
+
+	UPDATE Employee SET spouseId=004 WHERE empId=003;
+	UPDATE Employee SET spouseId=003 WHERE empId=004;
+
+	SELECT * FROM Employee;
+
+
+
+CREATE TABLE FullTime_Emplyee(
+	ft_empId INT NOT NULL,
+	basicSalary FLOAT,
+	deduction FLOAT,
+	allowences FLOAT,
+	CONSTRAINT pk_ft_employeeId PRIMARY KEY (ft_empId),
+	CONSTRAINT fk_fteId FOREIGN KEY (ft_empId) REFERENCES Employee (empId)
+	);
+
+	INSERT INTO FullTime_Emplyee (ft_empId,basicSalary,deduction,allowences) VALUES (003,'','','');
+	INSERT INTO FullTime_Emplyee (ft_empId,basicSalary,deduction,allowences) VALUES (004,'','','');
+
+	SELECT * FROM FullTime_Emplyee;
+	
+
+
+CREATE TABLE PartTime_Emplyee(
+	pt_empId INT NOT NULL,
+	workingHours TIME,
+	hourlyRate FLOAT,
+	CONSTRAINT pk_pt_employeeId PRIMARY KEY (pt_empId),
+	CONSTRAINT fk_pteId FOREIGN KEY (pt_empId) REFERENCES Employee (empId)
+	);
+
+	INSERT INTO PartTime_Emplyee (pt_empId,workingHours,hourlyRate) VALUES (001,'','');
+	INSERT INTO PartTime_Emplyee (pt_empId,workingHours,hourlyRate) VALUES (002,'','');
+
+	SELECT * FROM PartTime_Emplyee;	
+
+
+
+CREATE TABLE Job_Title(
+	jtId INT NOT NULL,
+	jtName varchar(30)
+	CONSTRAINT pk_jobtitletId primary key(jtId)
+	);
+
+	INSERT INTO Job_Title (jtId,jtName) VALUES (111,'Software engineer');
+	INSERT INTO Job_Title (jtId,jtName) VALUES (112,'Bussiness analysis');
+	INSERT INTO Job_Title (jtId,jtName) VALUES (113,'HR manager');
+
+	SELECT * FROM Job_Title;
+	
+CREATE TABLE Department(
+	depId INT NOT NULL,
+	depName VARCHAR(30),
+	phoneNumber INT,
+	CONSTRAINT pk_departmentId primary key(depId) 
+	);
+
+	INSERT INTO Department (depId,depName,phoneNumber) VALUES(221,'IT Department',0112354987);
+	INSERT INTO Department (depId,depName,phoneNumber) VALUES(222,'Financial Department',0112354879);
+	INSERT INTO Department (depId,depName,phoneNumber) VALUES(223,'HR Department',0112354798);
+
+	SELECT * FROM Department;
+
+
+
+
+CREATE TABLE Skill(
+	sId INT NOT NULL,
+	sName VARCHAR(30),
+	skillDescription VARCHAR(50),
+	CONSTRAINT pk_skillId primary key(sId) 
+	);
+
+	INSERT INTO Skill (sId,sName,skillDescription) VALUES (331,'SD','Software Development Skill');
+	INSERT INTO Skill (sId,sName,skillDescription) VALUES (332,'OOD','Object Oriented Development Skill ');
+	INSERT INTO Skill (sId,sName,skillDescription) VALUES (333,'STAD','Software Testing And Designing Skill');
+	INSERT INTO Skill (sId,sName,skillDescription) VALUES (334,'WAVC','Written And Verbal Communication Skill');
+	INSERT INTO Skill (sId,sName,skillDescription) VALUES (335,'DA','Data Analysing Skill');
+	INSERT INTO Skill (sId,sName,skillDescription) VALUES (336,'PS','Problem Solving Skill');
+	INSERT INTO Skill (sId,sName,skillDescription) VALUES (337,'OS','Organizational Skill');
+	INSERT INTO Skill (sId,sName,skillDescription) VALUES (338,'DMTAD','Decision Making, Training And Development Skill');
+	INSERT INTO Skill (sId,sName,skillDescription) VALUES (339,'TM','time Management Skill');
+
+	SELECT * FROM Skill;
+
+CREATE TABLE Project(
+	pId INT NOT NULL,
+	pName VARCHAR(30),
+	cost FLOAT,
+	CONSTRAINT pk_projectId primary key(pid)
+	);
+
+	INSERT INTO Project (pId,pName,cost) VALUES (441,'IOT Project',100000);
+	INSERT INTO Project (pId,pName,cost) VALUES (442,'ATM Network Project',50000);
+	INSERT INTO Project (pId,pName,cost) VALUES (443,'Android Project',200000);
+
+	SELECT * FROM Project;
+
+
+
+	
+CREATE TABLE Vendor(
+	vId INT not null,
+	vName varchar(30),
+	noLine char(10),
+	street varchar(20),
+	city varchar(20)
+	CONSTRAINT pk_vendorId primary key(vId)
+	);
+
+
+	INSERT INTO Vendor (vId,vName,noLine,street,city)VALUES (551,'Amal','No42','lotus avenue','Colombo');
+	INSERT INTO Vendor (vId,vName,noLine,street,city)VALUES (552,'Kamal','No52','Church Road','Kaluthara');
+	INSERT INTO Vendor (vId,vName,noLine,street,city)VALUES (553,'Nimal','No67','Word Place','Colombo');
+	INSERT INTO Vendor (vId,vName,noLine,street,city)VALUES (554,'Sunil','No81','Beach Road','Galle');
+
+	SELECT * FROM Vendor;
+
+
+
+CREATE TABLE Employee_Skill(
+	empId INT NOT NULL,
+	sId INT NOT NULL,
+	CONSTRAINT pk_EmployeeSkill primary key(empId,sId),
+	CONSTRAINT fk_employeeId FOREIGN KEY (empId) REFERENCES Employee (empId),
+	CONSTRAINT fk_skillId FOREIGN KEY (sId) REFERENCES Skill (sId)
+	);
+
+	INSERT INTO Employee_Skill (empId,sId) VALUES (001,331);
+	INSERT INTO Employee_Skill (empId,sId) VALUES (001,332);
+	INSERT INTO Employee_Skill (empId,sId) VALUES (002,334);
+	INSERT INTO Employee_Skill (empId,sId) VALUES (002,335);
+	INSERT INTO Employee_Skill (empId,sId) VALUES (002,336);
+	INSERT INTO Employee_Skill (empId,sId) VALUES (003,333);
+	INSERT INTO Employee_Skill (empId,sId) VALUES (004,337);
+	INSERT INTO Employee_Skill (empId,sId) VALUES (004,338);
+
+	SELECT * FROM Employee_Skill;
+	 
+CREATE TABLE WorksOn(
+	empId INT NOT NULL,
+	pId INT NOT NULL,
+	CONSTRAINT pk_EmployeeProject primary key(empId,pId),
+	CONSTRAINT fk_employeeWorksOnId FOREIGN KEY (empId) REFERENCES Employee (empId),
+	CONSTRAINT fk_projectId FOREIGN KEY (pId) REFERENCES Project (pId)
+	);
+
+	INSERT INTO WorksOn (empId,pId) VALUES (001,441);
+	INSERT INTO WorksOn (empId,pId) VALUES (001,442);
+	INSERT INTO WorksOn (empId,pId) VALUES (002,443);
+	INSERT INTO WorksOn (empId,pId) VALUES (002,441);
+	INSERT INTO WorksOn (empId,pId) VALUES (003,442);
+	INSERT INTO WorksOn (empId,pId) VALUES (004,442);
+	INSERT INTO WorksOn (empId,pId) VALUES (004,443);
+
+	SELECT * FROM WorksOn;
+
+CREATE TABLE Project_Skill(
+	pId INT NOT NULL,
+	sId INT NOT NULL,
+	CONSTRAINT pk_EmployeeProSkill primary key(pId,sId),
+	CONSTRAINT fk_projectSkillId FOREIGN KEY (pId) REFERENCES Project (pId),
+	CONSTRAINT fk_PskillId FOREIGN KEY (sId) REFERENCES Skill (sId)
+	);
+
+	INSERT INTO Project_Skill (pId,sId) VALUES (441,331);
+	INSERT INTO Project_Skill (pId,sId) VALUES (441,337);
+	INSERT INTO Project_Skill (pId,sId) VALUES (441,334);
+	INSERT INTO Project_Skill (pId,sId) VALUES (441,333);
+	INSERT INTO Project_Skill (pId,sId) VALUES (442,331);
+	INSERT INTO Project_Skill (pId,sId) VALUES (442,339);
+	INSERT INTO Project_Skill (pId,sId) VALUES (442,335);
+	INSERT INTO Project_Skill (pId,sId) VALUES (443,331);
+	INSERT INTO Project_Skill (pId,sId) VALUES (443,332);
+	INSERT INTO Project_Skill (pId,sId) VALUES (443,336);
+	INSERT INTO Project_Skill (pId,sId) VALUES (443,338);
+	
+	SELECT * FROM Project_Skill;
+
+
+
+CREATE TABLE Depertment_Vendor(
+	depId INT NOT NULL,
+	vId INT NOT NULL,
+	lastMeeting DATE,
+	CONSTRAINT pk_DepVendor primary key(depId,vId),
+	CONSTRAINT fk_departmentVId FOREIGN KEY (depId) REFERENCES Department (depId),
+	CONSTRAINT fk_DvendorId FOREIGN KEY (vId) REFERENCES Vendor (vId)
+	);
+
+
+	INSERT INTO Depertment_Vendor (depId,vId,lastMeeting) VALUES (221,552,'2019-01-25');
+	INSERT INTO Depertment_Vendor (depId,vId,lastMeeting) VALUES (221,554,'2019-01-30');
+	INSERT INTO Depertment_Vendor (depId,vId,lastMeeting) VALUES (221,551,'2019-02-10');
+	INSERT INTO Depertment_Vendor (depId,vId,lastMeeting) VALUES (222,553,'2019-04-22');
+	
+	 
+	
+	SELECT * FROM Depertment_Vendor;
+
+	CREATE TABLE login(
+			UserId int,
+			Password varchar(50)
+			);
+
+	INSERT INTO login (UserId,Password) VALUES (4321,'tester@123');
+	INSERT INTO login (UserId,Password) VALUES (5678,'admin@123');
+	INSERT INTO login (UserId,Password) VALUES (9123,'tester@456');
+
+	SELECT * FROM login;
+	
+
+
+
